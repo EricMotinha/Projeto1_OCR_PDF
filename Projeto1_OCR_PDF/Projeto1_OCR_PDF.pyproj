@@ -21,6 +21,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="analise_dados.py" />
+    <Compile Include="dashboard.py" />
     <Compile Include="Projeto1_OCR_PDF.py" />
   </ItemGroup>
   <ItemGroup>

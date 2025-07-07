@@ -4,6 +4,23 @@ import re
 import shutil
 import csv
 import unicodedata
+import pytesseract
+from pdf2image import convert_from_path
+
+# Caminho do Poppler (ajuste se necessário)
+POPPLER_PATH = r"C:\Users\ericb\Downloads\Release-24.08.0-0\poppler-24.08.0\Library\bin"
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+def extrair_texto_ocr(caminho_pdf):
+    try:
+        imagens = convert_from_path(caminho_pdf, dpi=300, poppler_path=POPPLER_PATH)
+        texto_ocr = ""
+        for img in imagens:
+            texto_ocr += pytesseract.image_to_string(img, lang='por') + "\n"
+        return texto_ocr
+    except Exception as e:
+        print(f"❌ Falha ao aplicar OCR no arquivo: {caminho_pdf} - Erro: {e}")
+        return ""
 
 # Caminhos
 PASTA_ORIGEM = r"C:\Storage\PDF_PROJETO"
@@ -30,6 +47,7 @@ for nome_arquivo in os.listdir(PASTA_ORIGEM):
     print(f"\n📄 Lendo: {nome_arquivo}")
 
     texto = ""
+    metodo_extracao = "pdfplumber"
 
     try:
         with pdfplumber.open(caminho_pdf) as pdf:
@@ -42,8 +60,13 @@ for nome_arquivo in os.listdir(PASTA_ORIGEM):
         continue
 
     if not texto.strip():
-        print(f"⚠️ PDF sem texto extraível: {nome_arquivo}")
-        continue
+        print(f"⚠️ PDF sem texto extraível com pdfplumber. Tentando OCR: {nome_arquivo}")
+        texto = extrair_texto_ocr(caminho_pdf)
+        metodo_extracao = "OCR"
+
+        if not texto.strip():
+            print(f"❌ Nenhum texto extraído com OCR. Pulando arquivo: {nome_arquivo}")
+            continue
 
     # Tenta extrair usando regex direto
     nome_match = re.search(REGEX_NOME, texto, re.IGNORECASE)
@@ -74,7 +97,7 @@ for nome_arquivo in os.listdir(PASTA_ORIGEM):
     shutil.copy2(caminho_pdf, novo_caminho)
     print(f"✅ Arquivo salvo em: {novo_caminho}")
 
-    registros.append([nome, numero, data, novo_caminho])
+    registros.append([nome, numero, data, novo_caminho, metodo_extracao])
 
 # Cria pasta do CSV se não existir
 os.makedirs(os.path.dirname(CAMINHO_CSV), exist_ok=True)
@@ -82,7 +105,7 @@ os.makedirs(os.path.dirname(CAMINHO_CSV), exist_ok=True)
 # Salva os dados extraídos
 with open(CAMINHO_CSV, mode='w', newline='', encoding='utf-8') as f:
     writer = csv.writer(f)
-    writer.writerow(['Nome', 'NumeroDocumento', 'Data', 'CaminhoArquivo'])
+    writer.writerow(['Nome', 'NumeroDocumento', 'Data', 'CaminhoArquivo', 'Metodo'])
     writer.writerows(registros)
 
 print("\n📁 Processamento finalizado com sucesso. Arquivos organizados e index.csv criado.")
