@@ -1,4 +1,6 @@
 __pycache__/
-.env
+*.pyc
+exportdata/
 output/
+.env
 *.log

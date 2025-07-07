@@ -1,11 +1,12 @@
-﻿# Projeto 1 — PDF Reader and Organizer Automation with Python / / Automatizador de PDF com OCR (Python)
+﻿# 📄 Projeto 1 — PDF Reader and Organizer Automation with Python / Automatizador de PDF com OCR (Python)
 
-## 🇺🇸 PDF Reader and Organizer Automation with Python
-This project aims to automate the reading and organization of PDF files from a local folder. The script scans the directory, extracts text using `pdfplumber`, and organizes the PDFs based on extracted data such as name, date, or document number.
+## 🇺🇸 Overview
 
+This project automatically extracts data from PDF files using Python, renames them based on extracted content (like client name, date and document number), organizes them into folders, and creates a structured CSV index.
 
-## 🇧🇷 Sobre o Projeto
-Este projeto tem como objetivo automatizar a leitura e organização de arquivos PDF em uma pasta local. O script varre o diretório, extrai texto dos arquivos usando `pdfplumber` e organiza os PDFs com base nas informações extraídas (como nome, data ou número do documento).
+## 🇧🇷 Visão Geral
+
+Este projeto automatiza a leitura de arquivos PDF com Python, extrai dados como nome do cliente, número e data do documento, renomeia os arquivos com base nessas informações, organiza em pastas e gera um índice CSV com todos os dados.
 
 ---
 
@@ -13,13 +14,32 @@ Este projeto tem como objetivo automatizar a leitura e organização de arquivos
 
 - Python 3.x
 - pdfplumber
-- os, shutil, re (standard libraries)
+- re (Regex)
+- shutil / os
+- csv
+- (opcional para expansão futura: pytesseract, pdf2image)
 
 ---
 
-## ▶️ Como Executar | How to Run
+## 📁 Estrutura do Projeto | Project Structure
 
-Instale as dependências:
+Projeto1_OCR_PDF/
+├── src/
+│ └── Projeto1_OCR_PDF.py # Script principal
+├── output/ # Pastas com PDFs organizados
+├── samples/ # PDFs de entrada
+├── exportdata/
+│ └── index.csv # CSV com dados extraídos
+├── README.md
+├── requirements.txt
+├── .gitignore
+└── LICENSE
+
+---
+
+## ▶️ Como executar | How to run
+
+1. Instale as dependências:
 
 ```bash
 pip install -r requirements.txt
