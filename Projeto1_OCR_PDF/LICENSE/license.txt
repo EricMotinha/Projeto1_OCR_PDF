@@ -1,0 +1,13 @@
+﻿---
+
+### 📄 Licença
+
+Já que você adicionou o arquivo `LICENSE`, pode referenciar:
+
+```markdown
+---
+
+## 📄 Licença | License
+
+Este projeto está licenciado sob a licença MIT.  
+This project is licensed under the MIT License.
